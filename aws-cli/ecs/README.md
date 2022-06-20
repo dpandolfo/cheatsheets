@@ -50,7 +50,6 @@ aws ecs describe-services --cluster $cluster_name --services $service_name | jq 
 ## Configure Variable for Task ID
 ```
 export task_id = task_id
-
 ```
 
 Grab the task id and describe the info to get the last know status:
