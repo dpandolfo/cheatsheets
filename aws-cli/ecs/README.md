@@ -53,20 +53,19 @@ Grab the task id and describe the info to get the last know status:
 aws ecs describe-tasks --tasks $task_id --cluster $cluster_name  | jq -r '.tasks[].lastStatus'
 ```
 
+## Configure Variable for Task ID
+```
+export task_id = task_id
+
+```
 Get the stop code:
 ```
-aws ecs describe-tasks --tasks 00000000-0000-0000-0000-000000000000 --cluster $cluster_name   | jq -r '.tasks[].stopCode'
+aws ecs describe-tasks --tasks $task_id --cluster $cluster_name   | jq -r '.tasks[].stopCode'
 ```
 
 Get the stop reason:
 ```
-aws ecs describe-tasks --tasks 00000000-0000-0000-0000-000000000000 --cluster $cluster_name   | jq -r '.tasks[].stoppedReason'
-```
-
-## Create ECS Service
-Create a ECS Service and specifying a Capacity Provider
-```
-aws ecs create-service --cluster $cluster_name --service-name $service_name --task-definition mytaskdef:1 --desired-count 1 --scheduling-strategy "REPLICA" --capacity-provider-strategy='[{"capacityProvider": "ondemand-capacity","weight": 0, "base": 1},{"capacityProvider": "spot-capacity", "weight": 100, "base": 0}]'
+aws ecs describe-tasks --tasks $task_id --cluster $cluster_name   | jq -r '.tasks[].stoppedReason'
 ```
 
 ## Update ECS Service
@@ -74,10 +73,4 @@ Update ECS Service to 3 replicas:
 
 ```
 aws --profile default ecs update-service --cluster $cluster_name --service $service_name --desired-count 3
-```
-
-Update ECS Service to use Capacity Providers:
-
-```
-aws --profile default ecs update-service --cluster $cluster_name --service $service_name --capacity-provider-strategy='[{"capacityProvider": "ondemand-capacity", "weight": 0, "base": 1},{"capacityProvider": "spot-capacity", "weight": 100, "base": 0}]' --force-new-deployment
 ```
