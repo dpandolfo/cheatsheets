@@ -1,0 +1,12 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^https://github.com/dpandolfo/cheatsheets",
+      "comment": "Ignore links to the repository itself in development"
+    }
+  ],
+  "timeout": 10,
+  "retryOn": [429],
+  "retryCount": 3,
+  "fallbackLanguages": ["en"]
+}

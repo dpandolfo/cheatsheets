@@ -13,25 +13,84 @@ Coleção de guias práticos e referências rápidas para ferramentas, tecnologi
 
 ## 📚 Índice
 
-<!-- Mantenha esta lista sincronizada com os cheatsheets no repositório -->
+### 🐳 Container & Orchestration
 
-### AWS CLI
-* [ECS](aws-cli/ecs/README.md) — Elastic Container Service
-* [EKS](aws-cli/eks/README.md) — Elastic Kubernetes Service
+* **AWS ECS** — [Elastic Container Service](aws-cli/ecs/README.md)
+* **AWS EKS** — [Elastic Kubernetes Service](aws-cli/eks/README.md)
+* **Kubernetes** — [kubectl essentials and commands](kubernetes/kubectl.md)
+
+### 🚀 DevOps & Infrastructure
+
+* **Terraform** — [Infrastructure as Code essentials](devops/terraform.md)
+* **Docker** — [Containerization and Docker commands](devops/docker.md)
+
+### 💾 Databases
+
+* **PostgreSQL** — [SQL database essentials and commands](databases/postgresql.md)
+* **Redis** — [In-memory data store commands and patterns](databases/redis.md)
 
 ## 🚀 Como Usar
 
-1. **Navegue pela estrutura** — Cada tópico está organizado em pastas
+1. **Navegue pela estrutura** — Cada tópico está organizado em pastas temáticas
 2. **Consulte online** — Acesse via [GitHub Pages](https://dpandolfo.github.io/cheatsheets/)
 3. **Leia localmente** — Clone e explore os arquivos Markdown
+4. **Pesquise com Ctrl+F** — Use o atalho em seu editor para encontrar comandos rapidamente
 
 ## 📝 Contribuindo
 
-Para adicionar novos cheatsheets:
-1. Crie uma nova pasta com o nome do tópico
-2. Adicione um `README.md` com o conteúdo
-3. Atualize o índice acima
+Para adicionar novos cheatsheets ou melhorar os existentes:
+
+1. Leia o [CONTRIBUTING.md](CONTRIBUTING.md)
+2. Crie uma branch com suas mudanças
+3. Siga o padrão de formatação definido
+4. Abra um Pull Request
+
+### Guia Rápido de Contribuição
+
+```bash
+# Clone e crie sua branch
+git clone https://github.com/dpandolfo/cheatsheets.git
+cd cheatsheets
+git checkout -b feature/novo-cheatsheet
+
+# Crie seu arquivo seguindo o padrão
+# Adicione ao README
+# Commit e push
+git add seu-arquivo.md README.md
+git commit -m "Add [tool] cheatsheet"
+git push origin feature/novo-cheatsheet
+```
+
+## 🎯 Roadmap
+
+Próximos cheatsheets planejados:
+
+- [ ] AWS Lambda
+- [ ] AWS S3 & CloudFront
+- [ ] Git & GitHub
+- [ ] GraphQL
+- [ ] REST API best practices
+- [ ] Testing (Jest, Pytest)
+- [ ] CI/CD (GitHub Actions, GitLab CI)
 
 ## 📄 Licença
 
-Consulte o arquivo LICENSE para detalhes
+MIT License — veja [LICENSE](LICENSE) para detalhes
+
+## 💡 Dicas
+
+- Use `Ctrl+F` (ou `Cmd+F`) para buscar rapidamente
+- Copie exemplos diretamente para seu terminal
+- Links para documentação oficial estão inclusos
+- Cada cheatsheet é independente e autocontido
+
+## 🤝 Comunidade
+
+- Sugestões e reportar issues — Abra uma [GitHub Issue](https://github.com/dpandolfo/cheatsheets/issues)
+- Quer contribuir? — Veja [CONTRIBUTING.md](CONTRIBUTING.md)
+- Feedback — Seus comentários ajudam a melhorar!
+
+---
+
+**Última atualização:** 2024
+

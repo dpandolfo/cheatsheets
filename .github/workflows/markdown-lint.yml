@@ -1,0 +1,36 @@
+name: Markdown Lint
+
+on:
+  push:
+    branches: [master, main, develop]
+    paths:
+      - '**.md'
+  pull_request:
+    branches: [master, main, develop]
+    paths:
+      - '**.md'
+
+jobs:
+  markdown-lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install markdownlint
+        run: npm install -g markdownlint-cli
+
+      - name: Run Markdown Lint
+        run: markdownlint '**/*.md' --ignore node_modules --ignore '.git'
+
+      - name: Check for broken links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: true
+          use-verbose-mode: false
+          config-file: '.github/markdown-link-check.json'
