@@ -1,0 +1,49 @@
+# Editor and IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# OS
+Thumbs.db
+.directory
+
+# Node (for any future automation)
+node_modules/
+.npm
+package-lock.json
+
+# Python (for scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# SSH keys
+*.pem
+*.key
+id_rsa
+id_ed25519
+
+# Session files
+*.session
+
+# Local configuration
+.env
+.env.local
+secrets.txt

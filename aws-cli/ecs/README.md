@@ -1,74 +1,107 @@
 # AWS CLI ECS Cheatsheet
 
 ## List ECS Clusters
-```
-$ aws ecs list-clusters | jq -r '.clusterArns[]
+
+```bash
+aws ecs list-clusters | jq -r '.clusterArns[]'
 ```
 
-## Configure Variable for Cluster Name
-```
-export cluster_name = cluster_name
+## Configure Variables
+
+```bash
+export CLUSTER_NAME="my-cluster"
+export SERVICE_NAME="my-service"
+export TASK_ID="arn:aws:ecs:region:account-id:task/cluster/task-id"
 ```
 
-## List ECS Instances
-```
-aws ecs list-container-instances --cluster $cluster_name | jq -r '.containerInstanceArns[]'
+## List Resources
+
+### List Container Instances
+
+```bash
+aws ecs list-container-instances --cluster $CLUSTER_NAME | jq -r '.containerInstanceArns[]'
 ```
 
-## List ECS Services
-```
-aws ecs list-services --cluster $cluster_name | jq -r '.serviceArns[]'
+### List Services
+
+```bash
+aws ecs list-services --cluster $CLUSTER_NAME | jq -r '.serviceArns[]'
 ```
 
-## Configure Variable for Service Name
-```
-export service_name = service_name
+### List Tasks in Service
+
+```bash
+aws ecs list-tasks --cluster $CLUSTER_NAME --service-name $SERVICE_NAME | jq -r '.taskArns[]'
 ```
 
-## Describe ECS Service
- Get the running count of containers for a given service:
-```
-aws ecs describe-services --cluster $cluster_name --services $service_name | jq -r '.services[].runningCount'
+## Describe Resources
+
+### Get Service Details
+
+```bash
+# Get running count
+aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME | jq -r '.services[].runningCount'
+
+# Get task definition
+aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME | jq -r '.services[].taskDefinition'
+
+# Get deployments
+aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME | jq -r '.services[].deployments'
+
+# Get latest events
+aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME | jq -r '.services[].events[0]'
 ```
 
-Get the task definition revision for a given service:
-```
-aws ecs describe-services --cluster $cluster_name --services $service_name | jq -r '.services[].taskDefinition'
-```
+### Get Task Details
 
-## Describe ECS Task States
-Check if the deployment info has accepted the new deployment:
-```
-aws ecs describe-services --cluster $cluster_name --services $service_name | jq -r '.services[].deployments'
-```
+```bash
+# Get last status
+aws ecs describe-tasks --tasks $TASK_ID --cluster $CLUSTER_NAME | jq -r '.tasks[].lastStatus'
 
-If not, get the latest event info:
-```
-aws ecs describe-services --cluster $cluster_name --services $service_name | jq -r '.services[].events[0]'
-```
+# Get stop code
+aws ecs describe-tasks --tasks $TASK_ID --cluster $CLUSTER_NAME | jq -r '.tasks[].stopCode'
 
-## Configure Variable for Task ID
-```
-export task_id = task_id
-```
+# Get stop reason
+aws ecs describe-tasks --tasks $TASK_ID --cluster $CLUSTER_NAME | jq -r '.tasks[].stoppedReason'
 
-Grab the task id and describe the info to get the last know status:
-```
-aws ecs describe-tasks --tasks $task_id --cluster $cluster_name  | jq -r '.tasks[].lastStatus'
-```
-
-Get the stop code:
-```
-aws ecs describe-tasks --tasks $task_id --cluster $cluster_name   | jq -r '.tasks[].stopCode'
-```
-
-Get the stop reason:
-```
-aws ecs describe-tasks --tasks $task_id --cluster $cluster_name   | jq -r '.tasks[].stoppedReason'
+# Full task info
+aws ecs describe-tasks --tasks $TASK_ID --cluster $CLUSTER_NAME | jq '.tasks[0]'
 ```
 
 ## Update ECS Service
-Update ECS Service to 3 replicas:
+
+```bash
+# Scale service to desired count
+aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --desired-count 3
+
+# Update task definition
+aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME \
+  --task-definition my-task:2 --force-new-deployment
+
+# Enable/disable service
+aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --desired-count 0
 ```
-aws ecs update-service --cluster $cluster_name --service $service_name --desired-count 3
+
+## Troubleshooting
+
+### Task Failed to Start
+
+```bash
+# Check task stopping reason
+aws ecs describe-tasks --tasks $TASK_ID --cluster $CLUSTER_NAME | \
+  jq '.tasks[] | {lastStatus, stoppedReason, stoppingAt}'
+
+# Check CloudWatch logs (if container agent logs available)
+aws logs tail /ecs/my-service --follow
+```
+
+### Service Not Progressing
+
+```bash
+# Check if there are any service events
+aws ecs describe-services --cluster $CLUSTER_NAME --services $SERVICE_NAME | \
+  jq '.services[0].events[:5]'
+
+# Verify task definition exists and is accessible
+aws ecs describe-task-definition --task-definition my-task:1 | jq '.taskDefinition.status'
 ```
